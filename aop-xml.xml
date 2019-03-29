@@ -1,0 +1,24 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+		
+	<bean id="arithmeticCalculator" class="spring.aop.xml.ArithmeticCalculatorImpl"></bean>
+	<bean id="loggingAspect" class="spring.aop.xml.LoggingAspect"></bean>
+	<bean id="vlidationAspect" class="spring.aop.xml.VlidationAspect"></bean>
+	
+	<aop:config>
+		<aop:pointcut id="pointcut" expression="execution(* spring.aop.xml.ArithmeticCalculator.*(..))"/>
+		<aop:aspect ref="loggingAspect" order="2">
+			<aop:before method="beforeMethod" pointcut-ref="pointcut" />
+		</aop:aspect>
+		<aop:aspect ref="vlidationAspect" order="1">
+			<aop:before method="validationArgs" pointcut-ref="pointcut" />
+		</aop:aspect>
+	</aop:config>
+	
+</beans>
